@@ -1,0 +1,3 @@
+# Test case 5: IPv6 CIDR test
+# Command: cidr-cli contains 2001:db8::/32 2001:db8:0:0:1::1
+2001:db8::/32 2001:db8:0:0:1::1

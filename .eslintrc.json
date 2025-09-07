@@ -1,0 +1,28 @@
+{
+  "env": {
+    "node": true,
+    "es2021": true,
+    "jest": true
+  },
+  "extends": [
+    "standard"
+  ],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-console": "off",
+    "no-process-exit": "off",
+    "space-before-function-paren": ["error", "always"],
+    "comma-dangle": ["error", "never"]
+  },
+  "overrides": [
+    {
+      "files": ["*.test.js"],
+      "rules": {
+        "no-unused-expressions": "off"
+      }
+    }
+  ]
+}

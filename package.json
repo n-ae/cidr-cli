@@ -1,0 +1,63 @@
+{
+  "name": "cidr-cli",
+  "version": "0.1.0",
+  "description": "CLI wrapper for cidr-tools contains method to check if IP addresses are within CIDR ranges",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "cidr-cli": "./index.js"
+  },
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/.bin/jest",
+    "test:watch": "node --experimental-vm-modules node_modules/.bin/jest --watch",
+    "test:coverage": "node --experimental-vm-modules node_modules/.bin/jest --coverage",
+    "docs": "jsdoc -c jsdoc.conf.json",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prepublishOnly": "npm test && npm run lint"
+  },
+  "keywords": [
+    "cidr",
+    "ip",
+    "network",
+    "cli",
+    "subnet",
+    "ipv4",
+    "ipv6",
+    "networking",
+    "network-tools"
+  ],
+  "author": {
+    "name": "nae",
+    "url": "https://github.com/n-ae"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/n-ae/cidr-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/n-ae/cidr-cli/issues"
+  },
+  "homepage": "https://github.com/n-ae/cidr-cli#readme",
+  "files": [
+    "index.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "cidr-tools": "^11.0.3"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jsdoc": "^4.0.3",
+    "eslint": "^8.57.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1"
+  }
+}
