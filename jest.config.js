@@ -5,23 +5,8 @@ export default {
   // Transform configuration for ES modules
   transform: {},
 
-  // Coverage configuration
-  collectCoverage: true,
-  coverageDirectory: 'coverage',
-  coveragePathIgnorePatterns: [
-    '/node_modules/',
-    '/coverage/',
-    '/docs/'
-  ],
-  coverageReporters: ['text', 'lcov', 'html'],
-  coverageThreshold: {
-    global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80
-    }
-  },
+  // Coverage configuration (disabled - using c8 instead)
+  collectCoverage: false,
 
   // Test patterns
   testMatch: [
