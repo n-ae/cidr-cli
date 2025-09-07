@@ -1,6 +1,6 @@
 {
   "name": "cidr-cli",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "CLI wrapper for cidr-tools contains method to check if IP addresses are within CIDR ranges",
   "main": "index.js",
   "type": "module",
