@@ -123,10 +123,10 @@ npm install
 ### Testing
 
 ```bash
-# Run tests
+# Run tests (Jest with ES modules)
 npm test
 
-# Run tests with coverage
+# Run tests with coverage (c8 + Jest)
 npm run test:coverage
 
 # Run tests in watch mode
@@ -154,21 +154,27 @@ npm run docs
 
 ```
 cidr-cli/
-├── index.js              # Main CLI implementation
-├── index.test.js          # Jest test suite
-├── package.json           # Package configuration
-├── README.md             # This file
-├── LICENSE               # MIT license
-├── CHANGELOG.md          # Version history
-├── .eslintrc.js          # ESLint configuration
-├── jest.config.js        # Jest configuration
-├── jsdoc.conf.json       # JSDoc configuration
-├── .npmignore            # npm publish exclusions
+├── index.js              # Main CLI implementation (ES modules)
+├── index.test.js         # Jest test suite (13 comprehensive tests)
+├── package.json          # Package configuration
+├── package-lock.json     # Lockfile v2 for CI compatibility
+├── README.md            # This file
+├── LICENSE              # MIT license
+├── CHANGELOG.md         # Version history
+├── PUBLISHING.md        # Publishing guide
+├── WARP.md             # Claude/Warp AI development guide
+├── .eslintrc.json      # ESLint configuration (Standard style)
+├── .eslintignore       # ESLint exclusions
+├── jest.config.js      # Jest configuration (ES modules)
+├── .c8rc.json         # c8 coverage configuration
+├── jsdoc.conf.json    # JSDoc configuration
+├── .npmignore         # npm publish exclusions
+├── .gitignore         # Git exclusions
 ├── .github/
-│   └── workflows/        # GitHub Actions CI/CD
-├── docs/                 # Generated documentation
-├── coverage/             # Test coverage reports
-└── tests/                # Legacy test files (kept for reference)
+│   └── workflows/     # GitHub Actions CI/CD (Node 14-21 matrix)
+├── docs/              # Generated JSDoc documentation
+├── coverage/          # c8 coverage reports (HTML + LCOV)
+└── tests/             # Legacy test files (kept for reference)
 ```
 
 ## 🚀 Publishing
@@ -187,12 +193,13 @@ git push origin main --tags
 
 ## 📊 Test Coverage
 
-The project maintains high test coverage with Jest:
+The project maintains **100% test coverage** using c8:
 
-- **13 test cases** covering all functionality
-- **Unit tests**: CLI argument parsing, help system, error handling
-- **Integration tests**: End-to-end CLI execution with various inputs
-- **Coverage threshold**: 80% for all metrics (branches, functions, lines, statements)
+- **13 test cases** covering all functionality and edge cases
+- **Integration tests**: End-to-end CLI execution via `child_process.spawn()`
+- **Coverage tool**: c8 (Node.js native coverage) instead of Jest built-in
+- **Coverage threshold**: 80% minimum, currently achieving 100%
+- **Reports**: Text, LCOV (for Codecov), and HTML formats
 
 Test categories:
 - ✅ CIDR containment checks (IPv4/IPv6)
@@ -200,15 +207,31 @@ Test categories:
 - ✅ Help and usage information
 - ✅ Error handling (invalid CIDR, invalid IP, malformed arguments)
 - ✅ Exit code validation
+- ✅ Whitespace handling in CIDR lists
+- ✅ Process-level coverage tracking
 
 ## 🔗 Dependencies
 
-- **Runtime**: [cidr-tools](https://www.npmjs.com/package/cidr-tools) ^11.0.3
-- **Development**: Jest, ESLint, JSDoc
+### Runtime Dependencies
+- **[cidr-tools](https://www.npmjs.com/package/cidr-tools)** ^11.0.3 - Core CIDR functionality
 
-## 📝 License
+### Development Dependencies
+- **[jest](https://jestjs.io/)** ^29.7.0 - Testing framework
+- **[c8](https://github.com/bcoe/c8)** ^10.1.3 - Native Node.js code coverage
+- **[eslint](https://eslint.org/)** ^8.57.0 - Code linting
+- **[eslint-config-standard](https://standardjs.com/)** ^17.1.0 - Standard style guide
+- **[jsdoc](https://jsdoc.app/)** ^4.0.3 - Documentation generation
 
-MIT © [Your Name](https://github.com/n-ae)
+### Key Features
+- **ES Modules**: Modern JavaScript module system
+- **Node.js 14+**: Minimum Node.js version support
+- **CI/CD**: GitHub Actions with Node.js 14.x-21.x matrix
+- **Coverage**: 100% code coverage with c8
+- **Lockfile v2**: Enhanced CI compatibility
+
+📝 License
+
+MIT © [nae](https://github.com/n-ae)
 
 ## 🤝 Contributing
 

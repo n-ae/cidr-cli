@@ -44,11 +44,22 @@
 
     <section>
         <article><h1>cidr-cli</h1>
-<p>A CLI wrapper for the <a href="https://www.npmjs.com/package/cidr-tools">cidr-tools</a> package, specifically wrapping the <code>contains</code> method to check if an IP address is contained within CIDR ranges.</p>
-<h2>Installation</h2>
-<pre class="prettyprint source lang-bash"><code>npm install
+<p><a href="https://badge.fury.io/js/cidr-cli"><img src="https://badge.fury.io/js/cidr-cli.svg" alt="npm version"></a>
+<a href="https://github.com/n-ae/cidr-cli/actions"><img src="https://github.com/n-ae/cidr-cli/workflows/CI/badge.svg" alt="Build Status"></a>
+<a href="https://codecov.io/gh/n-ae/cidr-cli"><img src="https://codecov.io/gh/n-ae/cidr-cli/branch/main/graph/badge.svg" alt="Coverage Status"></a>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a></p>
+<p>A CLI wrapper for the <a href="https://www.npmjs.com/package/cidr-tools">cidr-tools</a> package, specifically wrapping the <code>containsCidr</code> method to check if an IP address is contained within CIDR ranges.</p>
+<h2>🚀 Installation</h2>
+<h3>Global Installation (Recommended)</h3>
+<pre class="prettyprint source lang-bash"><code>npm install -g cidr-cli
 </code></pre>
-<h2>Usage</h2>
+<h3>Local Installation</h3>
+<pre class="prettyprint source lang-bash"><code>npm install cidr-cli
+</code></pre>
+<h3>Using npx (No Installation Required)</h3>
+<pre class="prettyprint source lang-bash"><code>npx cidr-cli contains &lt;cidr-list> &lt;ip>
+</code></pre>
+<h2>📖 Usage</h2>
 <pre class="prettyprint source lang-bash"><code>cidr-cli contains &lt;cidr-list> &lt;ip>
 </code></pre>
 <h3>Arguments</h3>
@@ -76,39 +87,168 @@ cidr-cli contains 2001:db8::/32 2001:db8:0:0:1::1
 # IP not in range
 cidr-cli contains 1.0.0.0/24,2.0.0.0/24 3.0.0.1
 # Output: false
+
+# Help
+cidr-cli --help
 </code></pre>
-<h2>Exit Codes</h2>
+<h2>📋 Exit Codes</h2>
 <ul>
 <li><code>0</code>: IP is contained in one of the CIDR ranges</li>
 <li><code>1</code>: IP is not contained in any of the CIDR ranges</li>
-<li><code>2</code>: Error occurred (invalid arguments, etc.)</li>
+<li><code>2</code>: Error occurred (invalid arguments, invalid CIDR format, invalid IP, etc.)</li>
 </ul>
-<h2>Testing</h2>
-<pre class="prettyprint source lang-bash"><code>npm test
+<h2>🧪 Use Cases</h2>
+<h3>Shell Scripts</h3>
+<pre class="prettyprint source lang-bash"><code>#!/bin/bash
+if cidr-cli contains 192.168.0.0/16 $USER_IP; then
+  echo &quot;User is on local network&quot;
+else
+  echo &quot;User is on external network&quot;
+fi
 </code></pre>
-<p>The test suite includes 5 test cases covering:</p>
+<h3>CI/CD Pipelines</h3>
+<pre class="prettyprint source lang-yaml"><code>- name: Check if IP is in allowed range
+  run: |
+    if ! cidr-cli contains 10.0.0.0/8,172.16.0.0/12,192.168.0.0/16 ${{ env.SERVER_IP }}; then
+      echo &quot;Server IP not in allowed private ranges&quot;
+      exit 1
+    fi
+</code></pre>
+<h3>Network Security</h3>
+<pre class="prettyprint source lang-bash"><code># Check if suspicious IP is in known bad ranges
+if cidr-cli contains 1.2.3.0/24,5.6.7.0/24 $SUSPICIOUS_IP; then
+  echo &quot;IP is in known malicious range - blocking&quot;
+  # Add blocking logic here
+fi
+</code></pre>
+<h2>🔧 Development</h2>
+<h3>Requirements</h3>
 <ul>
-<li>Single IP in single CIDR</li>
-<li>Multiple CIDRs with IP in first CIDR</li>
-<li>IP not in any CIDR</li>
-<li>User's example case</li>
-<li>IPv6 support</li>
+<li>Node.js &gt;= 14.0.0</li>
+<li>npm &gt;= 6.0.0</li>
 </ul>
-<h2>Files</h2>
+<h3>Setup</h3>
+<pre class="prettyprint source lang-bash"><code>git clone https://github.com/n-ae/cidr-cli.git
+cd cidr-cli
+npm install
+</code></pre>
+<h3>Testing</h3>
+<pre class="prettyprint source lang-bash"><code># Run tests (Jest with ES modules)
+npm test
+
+# Run tests with coverage (c8 + Jest)
+npm run test:coverage
+
+# Run tests in watch mode
+npm run test:watch
+</code></pre>
+<h3>Linting</h3>
+<pre class="prettyprint source lang-bash"><code># Check for linting issues
+npm run lint
+
+# Fix linting issues automatically
+npm run lint:fix
+</code></pre>
+<h3>Documentation</h3>
+<pre class="prettyprint source lang-bash"><code># Generate JSDoc documentation
+npm run docs
+</code></pre>
+<h2>🏗️ Project Structure</h2>
+<pre class="prettyprint source"><code>cidr-cli/
+├── index.js              # Main CLI implementation (ES modules)
+├── index.test.js         # Jest test suite (13 comprehensive tests)
+├── package.json          # Package configuration
+├── package-lock.json     # Lockfile v2 for CI compatibility
+├── README.md            # This file
+├── LICENSE              # MIT license
+├── CHANGELOG.md         # Version history
+├── PUBLISHING.md        # Publishing guide
+├── WARP.md             # Claude/Warp AI development guide
+├── .eslintrc.json      # ESLint configuration (Standard style)
+├── .eslintignore       # ESLint exclusions
+├── jest.config.js      # Jest configuration (ES modules)
+├── .c8rc.json         # c8 coverage configuration
+├── jsdoc.conf.json    # JSDoc configuration
+├── .npmignore         # npm publish exclusions
+├── .gitignore         # Git exclusions
+├── .github/
+│   └── workflows/     # GitHub Actions CI/CD (Node 14-21 matrix)
+├── docs/              # Generated JSDoc documentation
+├── coverage/          # c8 coverage reports (HTML + LCOV)
+└── tests/             # Legacy test files (kept for reference)
+</code></pre>
+<h2>🚀 Publishing</h2>
+<p>This package uses automated publishing via GitHub Actions:</p>
+<ol>
+<li><strong>On Push/PR</strong>: Runs full test suite across Node.js 14.x, 16.x, 18.x, 20.x, 21.x</li>
+<li><strong>On Tag</strong>: Automatically publishes to npm and creates GitHub release</li>
+</ol>
+<h3>Manual Publishing</h3>
+<pre class="prettyprint source lang-bash"><code>npm version patch|minor|major
+git push origin main --tags
+</code></pre>
+<h2>📊 Test Coverage</h2>
+<p>The project maintains <strong>100% test coverage</strong> using c8:</p>
 <ul>
-<li><code>index.js</code>: Main CLI implementation</li>
-<li><code>test.js</code>: Test runner</li>
-<li><code>tests/</code>: Directory containing test cases and expected outputs
-<ul>
-<li><code>test*.txt</code>: Test input files</li>
-<li><code>expected*.txt</code>: Expected output files</li>
+<li><strong>13 test cases</strong> covering all functionality and edge cases</li>
+<li><strong>Integration tests</strong>: End-to-end CLI execution via <code>child_process.spawn()</code></li>
+<li><strong>Coverage tool</strong>: c8 (Node.js native coverage) instead of Jest built-in</li>
+<li><strong>Coverage threshold</strong>: 80% minimum, currently achieving 100%</li>
+<li><strong>Reports</strong>: Text, LCOV (for Codecov), and HTML formats</li>
 </ul>
-</li>
-</ul>
-<h2>Dependencies</h2>
+<p>Test categories:</p>
 <ul>
-<li><a href="https://www.npmjs.com/package/cidr-tools">cidr-tools</a>: Core CIDR manipulation library</li>
-</ul></article>
+<li>✅ CIDR containment checks (IPv4/IPv6)</li>
+<li>✅ Multiple CIDR range support</li>
+<li>✅ Help and usage information</li>
+<li>✅ Error handling (invalid CIDR, invalid IP, malformed arguments)</li>
+<li>✅ Exit code validation</li>
+<li>✅ Whitespace handling in CIDR lists</li>
+<li>✅ Process-level coverage tracking</li>
+</ul>
+<h2>🔗 Dependencies</h2>
+<h3>Runtime Dependencies</h3>
+<ul>
+<li><strong><a href="https://www.npmjs.com/package/cidr-tools">cidr-tools</a></strong> ^11.0.3 - Core CIDR functionality</li>
+</ul>
+<h3>Development Dependencies</h3>
+<ul>
+<li><strong><a href="https://jestjs.io/">jest</a></strong> ^29.7.0 - Testing framework</li>
+<li><strong><a href="https://github.com/bcoe/c8">c8</a></strong> ^10.1.3 - Native Node.js code coverage</li>
+<li><strong><a href="https://eslint.org/">eslint</a></strong> ^8.57.0 - Code linting</li>
+<li><strong><a href="https://standardjs.com/">eslint-config-standard</a></strong> ^17.1.0 - Standard style guide</li>
+<li><strong><a href="https://jsdoc.app/">jsdoc</a></strong> ^4.0.3 - Documentation generation</li>
+</ul>
+<h3>Key Features</h3>
+<ul>
+<li><strong>ES Modules</strong>: Modern JavaScript module system</li>
+<li><strong>Node.js 14+</strong>: Minimum Node.js version support</li>
+<li><strong>CI/CD</strong>: GitHub Actions with Node.js 14.x-21.x matrix</li>
+<li><strong>Coverage</strong>: 100% code coverage with c8</li>
+<li><strong>Lockfile v2</strong>: Enhanced CI compatibility</li>
+</ul>
+<p>📝 License</p>
+<p>MIT © <a href="https://github.com/n-ae">nae</a></p>
+<h2>🤝 Contributing</h2>
+<ol>
+<li>Fork the repository</li>
+<li>Create a feature branch: <code>git checkout -b feature/amazing-feature</code></li>
+<li>Commit your changes: <code>git commit -am 'Add amazing feature'</code></li>
+<li>Push to the branch: <code>git push origin feature/amazing-feature</code></li>
+<li>Open a Pull Request</li>
+</ol>
+<h2>🐛 Issues</h2>
+<p>If you find a bug, please file an issue on <a href="https://github.com/n-ae/cidr-cli/issues">GitHub Issues</a>.</p>
+<h2>📈 Roadmap</h2>
+<ul>
+<li>[ ] Add support for excluding CIDR ranges</li>
+<li>[ ] Add JSON output format option</li>
+<li>[ ] Add batch processing from file input</li>
+<li>[ ] Add verbose mode with detailed matching information</li>
+<li>[ ] Add support for hostname resolution</li>
+</ul>
+<hr>
+<p><strong>Made with ❤️ for network administrators and DevOps engineers</strong></p></article>
     </section>
 
 
@@ -116,122 +256,16 @@ cidr-cli contains 1.0.0.0/24,2.0.0.0/24 3.0.0.1
 
 
 
-
-
-
-<section>
-
-<header>
-    
-        <h2>index.js</h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>CLI wrapper for cidr-tools containsCidr method</p></div>
-        
-
-        
-
-
-<dl class="details">
-
-    
-    <dt class="tag-version">Version:</dt>
-    <dd class="tag-version"><ul class="dummy"><li>1.0.0</li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li><a href="mailto:your.email@example.com">Your Name</a></li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-    <dt class="tag-license">License:</dt>
-    <dd class="tag-license"><ul class="dummy"><li>MIT</li></ul></dd>
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line3">line 3</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
-
-
-
-
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#main">main</a></li><li><a href="global.html#printUsage">printUsage</a></li></ul>
+    <h2><a href="index.html">Home</a></h2>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Fri Aug 29 2025 22:14:33 GMT+0300 (GMT+03:00)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Sep 07 2025 23:30:43 GMT+0300 (GMT+03:00)
 </footer>
 
 <script> prettyPrint(); </script>

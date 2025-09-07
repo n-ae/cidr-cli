@@ -36,13 +36,16 @@ This document outlines the steps to publish `cidr-cli` to npm.
 ### 1. Pre-publishing Checklist
 
 ```bash
-# Run all tests
+# Run all tests (Jest with ES modules)
 npm test
 
-# Run linter
+# Run tests with coverage (c8)
+npm run test:coverage
+
+# Run linter (ESLint with Standard config)
 npm run lint
 
-# Generate documentation
+# Generate documentation (JSDoc)
 npm run docs
 
 # Check package contents
@@ -79,17 +82,21 @@ npm publish
 
 The published package includes:
 
-- `index.js` - Main CLI script
+- `index.js` - Main CLI script (ES module)
 - `README.md` - Documentation
 - `LICENSE` - MIT license
 - `package.json` - Package metadata
 
+Package size: ~5KB (just the essentials)
+
 Excluded via `.npmignore`:
 - Test files (`*.test.js`, `tests/`)
-- Development files (`.eslintrc.js`, `jest.config.js`, etc.)
+- Development files (`.eslintrc.json`, `jest.config.js`, `.c8rc.json`, etc.)
 - Documentation build (`docs/`)
-- Coverage reports
-- GitHub workflows
+- Coverage reports (`coverage/`)
+- GitHub workflows (`.github/`)
+- Development guides (`WARP.md`, `PUBLISHING.md`)
+- Lock files and logs
 
 ## Verification
 
