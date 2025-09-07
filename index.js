@@ -12,7 +12,7 @@ if (args.length === 0 || args[0] === '--help' || args[0] === '-h') {
 Examples:
   cidr-cli contains 192.168.1.0/24 192.168.1.100
   cidr-cli contains 10.0.0.0/8,172.16.0.0/12 10.1.2.3
-`);
+`)
   process.exit(args.length === 0 ? 1 : 0)
 }
 
