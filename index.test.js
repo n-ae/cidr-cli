@@ -84,14 +84,14 @@ describe('cidr-cli', () => {
       const output = result.stderr || result.stdout
       expect(output).toContain('Usage: cidr-cli contains')
       expect(output).toContain('Examples:')
-      expect(result.code).toBe(1)
+      expect(result.code).toBe(0)
     })
 
     test('should show help with -h flag', async () => {
       const result = await runCLI(['-h'])
       const output = result.stderr || result.stdout
       expect(output).toContain('Usage: cidr-cli contains')
-      expect(result.code).toBe(1)
+      expect(result.code).toBe(0)
     })
 
     test('should show help with no arguments', async () => {
