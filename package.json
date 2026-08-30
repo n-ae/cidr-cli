@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "bin": {
-    "cidr-cli": "./index.js"
+    "cidr-cli": "index.js"
   },
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/.bin/jest",
@@ -34,7 +34,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/n-ae/cidr-cli.git"
+    "url": "git+https://github.com/n-ae/cidr-cli.git"
   },
   "bugs": {
     "url": "https://github.com/n-ae/cidr-cli/issues"

@@ -6,16 +6,23 @@ This document outlines the steps to publish `cidr-cli` to npm.
 
 1. **npm account**: You need an npm account with publishing rights
 2. **GitHub repository**: Set up the repository with the provided GitHub Actions
-3. **npm token**: Create an npm token and add it as `NPM_TOKEN` in GitHub Secrets
+3. **npm Trusted Publisher**: Link the `cidr-cli` package to this repo's `publish` job (no token to manage)
 
 ## Automated Publishing (Recommended)
 
-### Setup GitHub Secrets
+Publishing uses npm's [OIDC Trusted Publishing](https://docs.npmjs.com/trusted-publishers) — GitHub Actions
+authenticates to npm directly via a short-lived OIDC token, so there is no long-lived `NPM_TOKEN` secret to
+create, store, or rotate.
 
-1. Go to your GitHub repository
-2. Navigate to Settings → Secrets and Variables → Actions
-3. Add the following secrets:
-   - `NPM_TOKEN`: Your npm token from https://www.npmjs.com/settings/tokens
+### One-time setup
+
+1. On [npmjs.com](https://www.npmjs.com), go to the `cidr-cli` package → **Settings → Trusted Publisher**
+2. Add a GitHub Actions trusted publisher pointing at:
+   - Repository: `n-ae/cidr-cli`
+   - Workflow file: `.github/workflows/release.yml`
+   - Environment: `npm`
+3. On GitHub, the `npm` environment (Settings → Environments) must exist — the `publish` job deploys to it and
+   requests an `id-token: write` OIDC token scoped to that environment.
 
 ### Publish a Release
 
@@ -42,7 +49,7 @@ npm test
 # Run tests with coverage (c8)
 npm run test:coverage
 
-# Run linter (ESLint with Standard config)
+# Run linter (ESLint flat config via neostandard)
 npm run lint
 
 # Generate documentation (JSDoc)
@@ -123,14 +130,15 @@ cidr-cli contains 192.168.1.0/24 192.168.1.100
 
 ### GitHub Actions Failures
 
-1. **NPM_TOKEN Issues**: Verify secret is set correctly
+1. **Trusted Publisher Issues**: Verify the npm package's Trusted Publisher config matches this repo, the
+   `release.yml` workflow path, and the `npm` environment exactly — a mismatch on any of the three causes the
+   OIDC exchange to fail
 2. **Test Failures**: Check CI logs for specific test failures
 3. **Build Issues**: Ensure local build works before tagging
 
 ## Security Notes
 
-- Never commit npm tokens or credentials
-- Use GitHub Secrets for sensitive data
+- No npm token exists to leak — publishing uses OIDC Trusted Publishing, not a stored credential
+- Never commit npm tokens or credentials if you fall back to manual/local publishing
 - Enable 2FA on npm account
-- Regularly rotate npm tokens
 - Monitor package for security vulnerabilities with `npm audit`
