@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-08-30
+
+### Changed
+- Updated `cidr-tools` to ^13.0.1 (from ^11.0.3)
+- Updated `jest` to ^30.5.0, `c8` to ^12.0.0, `jsdoc` to ^4.0.5
+- Replaced `eslint-config-standard` + `eslint-plugin-import/node/promise` with `neostandard` and migrated ESLint config from `.eslintrc.json`/`.eslintignore` to flat-config `eslint.config.js`
+- Kept `eslint` on ^9.39.5 rather than 10.x: `neostandard@0.13.0` bundles an outdated `@stylistic/eslint-plugin` that crashes under ESLint 10
+- Raised minimum supported Node.js to >=22 to match `cidr-tools`' declared engine requirement; CI matrix and release workflow updated accordingly
+
+### Fixed
+- Reduced `npm audit` findings from 12 (1 low, 2 moderate, 9 high) to 4 (1 moderate, 3 high) as a side effect of the dependency updates
+
 ## [0.2.0] - 2025-09-07
 
 ### Changed
@@ -67,7 +79,8 @@ cidr-cli contains 10.0.0.0/8,172.16.0.0/12 10.1.2.3  # Returns: true
 cidr-cli contains 1.0.0.0/24,2.0.0.0/24 1.0.0.1       # Returns: true
 ```
 
-[Unreleased]: https://github.com/n-ae/cidr-cli/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/n-ae/cidr-cli/compare/v0.2.2...HEAD
+[0.2.2]: https://github.com/n-ae/cidr-cli/compare/v0.2.1...v0.2.2
 [0.2.0]: https://github.com/n-ae/cidr-cli/releases/tag/v0.2.0
 [0.1.1]: https://github.com/n-ae/cidr-cli/releases/tag/v0.1.1
 [1.0.0]: https://github.com/n-ae/cidr-cli/releases/tag/v1.0.0

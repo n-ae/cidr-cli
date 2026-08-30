@@ -91,7 +91,7 @@ Package size: ~5KB (just the essentials)
 
 Excluded via `.npmignore`:
 - Test files (`*.test.js`, `tests/`)
-- Development files (`.eslintrc.json`, `jest.config.js`, `.c8rc.json`, etc.)
+- Development files (`eslint.config.js`, `jest.config.js`, `.c8rc.json`, etc.)
 - Documentation build (`docs/`)
 - Coverage reports (`coverage/`)
 - GitHub workflows (`.github/`)

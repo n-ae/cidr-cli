@@ -10,7 +10,7 @@ docs/
 !README.md
 
 # Development files
-.eslintrc.js
+eslint.config.js
 jsdoc.conf.json
 jest.config.js
 

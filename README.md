@@ -163,8 +163,7 @@ cidr-cli/
 ├── CHANGELOG.md         # Version history
 ├── PUBLISHING.md        # Publishing guide
 ├── WARP.md             # Claude/Warp AI development guide
-├── .eslintrc.json      # ESLint configuration (Standard style)
-├── .eslintignore       # ESLint exclusions
+├── eslint.config.js    # ESLint flat configuration (neostandard)
 ├── jest.config.js      # Jest configuration (ES modules)
 ├── .c8rc.json         # c8 coverage configuration
 ├── jsdoc.conf.json    # JSDoc configuration
@@ -213,14 +212,14 @@ Test categories:
 ## 🔗 Dependencies
 
 ### Runtime Dependencies
-- **[cidr-tools](https://www.npmjs.com/package/cidr-tools)** ^11.0.3 - Core CIDR functionality
+- **[cidr-tools](https://www.npmjs.com/package/cidr-tools)** ^13.0.1 - Core CIDR functionality
 
 ### Development Dependencies
-- **[jest](https://jestjs.io/)** ^29.7.0 - Testing framework
-- **[c8](https://github.com/bcoe/c8)** ^10.1.3 - Native Node.js code coverage
-- **[eslint](https://eslint.org/)** ^8.57.0 - Code linting
-- **[eslint-config-standard](https://standardjs.com/)** ^17.1.0 - Standard style guide
-- **[jsdoc](https://jsdoc.app/)** ^4.0.3 - Documentation generation
+- **[jest](https://jestjs.io/)** ^30.5.0 - Testing framework
+- **[c8](https://github.com/bcoe/c8)** ^12.0.0 - Native Node.js code coverage
+- **[eslint](https://eslint.org/)** ^9.39.5 - Code linting (flat config)
+- **[neostandard](https://github.com/neostandard/neostandard)** ^0.13.0 - Standard style guide for flat config
+- **[jsdoc](https://jsdoc.app/)** ^4.0.5 - Documentation generation
 
 ### Key Features
 - **ES Modules**: Modern JavaScript module system
