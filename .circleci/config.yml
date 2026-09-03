@@ -1,11 +1,9 @@
 version: 2.1
-orbs:
-  codecov: codecov/codecov@5
 
 workflows:
-  upload-to-codecov:
+  test:
     jobs:
-      - test-cov 
+      - test-cov
 
 jobs:
   test-cov:
@@ -19,12 +17,11 @@ jobs:
       - run:
           name: Run tests and collect coverage
           command: npm run test:coverage
-      - codecov/upload:
-          # The orb's GPG integrity check fetches its public key from
-          # https://keybase.io/codecovsecops/pgp_keys.asc, which is currently
-          # returning something gpg can't parse ("no valid OpenPGP data
-          # found") — an upstream issue unrelated to this repo. The coverage
-          # run itself passes; only the orb's own binary-signature check
-          # fails. Skip it until upstream fixes the key URL.
-          skip_validation: true
-
+      # Coverage is uploaded to Codecov from GitHub Actions
+      # (.github/workflows/ci.yml), not from here. The codecov orb used to run
+      # in this job, but it fails before it can upload: its integrity check
+      # fetches a public key from https://keybase.io/codecovsecops/pgp_keys.asc,
+      # which returns something gpg can't parse ("no valid OpenPGP data found"),
+      # and the orb's skip_validation flag does not suppress that step. Even
+      # with that fixed it would need CODECOV_TOKEN and would double-report the
+      # same commit alongside the Actions upload, so this job just runs tests.
