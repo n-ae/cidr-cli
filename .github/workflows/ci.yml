@@ -16,10 +16,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v7
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
@@ -44,9 +44,17 @@ jobs:
 
     - name: Upload coverage to Codecov
       if: matrix.node-version == '22.x'
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v7
       with:
-        file: ./coverage/lcov.info
+        # v7 renamed this input from `file` to `files`; the old name was
+        # silently ignored.
+        files: ./coverage/lcov.info
+        # Without a token the upload takes the tokenless path, which Codecov
+        # rate-limits (HTTP 429). Set CODECOV_TOKEN as a repo secret to make
+        # coverage uploads actually land.
+        token: ${{ secrets.CODECOV_TOKEN }}
+        # Coverage reporting is informational; a Codecov outage must not fail
+        # the build.
         fail_ci_if_error: false
 
   integration:
@@ -55,10 +63,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
 
     - name: Use Node.js 24.x
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v7
       with:
         node-version: 24.x
         cache: 'npm'
@@ -83,38 +91,31 @@ jobs:
 
     - name: Test exit codes
       run: |
-        set +e  # Don't exit on error
+        # Contract: 0 = IP in range, 1 = not in range, 2 = invalid input.
+        check() {
+          local expected="$1" desc="$2"
+          shift 2
+          local actual=0
+          "$@" || actual=$?
+          if [ "$actual" -ne "$expected" ]; then
+            echo "Expected exit code $expected for $desc, got $actual"
+            exit 1
+          fi
+        }
 
-        # Should return 0 (success)
-        cidr-cli contains 192.168.1.0/24 192.168.1.100
-        if [ $? -ne 0 ]; then
-          echo "Expected exit code 0 for IP in range"
-          exit 1
-        fi
-
-        # Should return 1 (not found)
-        cidr-cli contains 192.168.1.0/24 10.0.0.1
-        if [ $? -ne 1 ]; then
-          echo "Expected exit code 1 for IP not in range"
-          exit 1
-        fi
-
-        # Should return 2 (error)
-        cidr-cli contains invalid-cidr 192.168.1.1
-        if [ $? -ne 2 ]; then
-          echo "Expected exit code 2 for invalid CIDR"
-          exit 1
-        fi
+        check 0 "IP in range"     cidr-cli contains 192.168.1.0/24 192.168.1.100
+        check 1 "IP not in range" cidr-cli contains 192.168.1.0/24 10.0.0.1
+        check 2 "invalid CIDR"    cidr-cli contains invalid-cidr 192.168.1.1
 
   security:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
 
     - name: Use Node.js 24.x
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v7
       with:
         node-version: 24.x
         cache: 'npm'
